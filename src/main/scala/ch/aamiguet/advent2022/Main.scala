@@ -4,6 +4,9 @@ package advent2022
 @main def Main(args: String*): Unit =
   println("─" * 100)
 
-  println("hello world")
+  val d = Day1("input/day1.txt")
+
+  println(d.solvePart1)
+  println(d.solvePart2)
 
   println("─" * 100)
