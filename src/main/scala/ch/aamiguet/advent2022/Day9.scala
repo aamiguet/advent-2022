@@ -86,3 +86,39 @@ final case class Day9(
   def solvePart2: Int =
     val knots = computeMotions(List.fill(10)(List(Position(0, 0))), moves)
     knots.last.toSet.size
+
+  def visualize(pos: List[Position]): Unit =
+    val minX = pos.map(_.x).min
+    val maxX = pos.map(_.x).max
+    val minY = pos.map(_.y).min
+    val maxY = pos.map(_.y).max
+
+    val padX = (12 - (maxX - minX)).toDouble/2d
+    val startX = minX - Math.floor(padX).toInt
+    val endX = maxX + Math.ceil(padX).toInt
+    val padY = (12 - (maxY - minY)).toDouble/2d
+    val startY = minY - Math.floor(padY).toInt
+    val endY = maxY + Math.ceil(padY).toInt
+    val rY = (startY to endY).reverse.toList
+    val rX = (startX to endX).toList
+
+    val l = rY.map { y =>
+      rX.map { x =>
+        val p = Position(x, y)
+        if pos.head == p then "H"
+        else if pos.last == p then "T"
+        else if pos.contains(p) then "x"
+        else " "
+      }
+    }
+    print("\u001b[2J")
+    println(l.map(_.mkString("")).mkString("\n"))
+
+  // visualize last 200 positions
+  def visualize: Unit =
+    val knots = computeMotions(List.fill(10)(List(Position(0, 0))), moves)
+    val allPos = knots.transpose.reverse
+    allPos.takeRight(200).foreach { pos =>
+      visualize(pos)
+      Thread.sleep(25)
+    }
