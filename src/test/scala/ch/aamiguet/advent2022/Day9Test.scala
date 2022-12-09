@@ -12,7 +12,7 @@ final class Day9Test extends TestSuite:
 
   val d2 = Day9("input/test9-2.txt")
 
-  test("day 9 - 2n input") {
+  test("day 9 - 2nd input") {
     expect(
       d2.solvePart2 === 36,
     )
