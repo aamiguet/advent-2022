@@ -6,6 +6,6 @@ final class Day15Test extends TestSuite:
   test("day 15") {
     expect(
       d.coveredPositions(10) === 26,
-      //d.solvePart2 === 93,
+      d.tuningFrequency(20) === 56000011L,
     )
   }
