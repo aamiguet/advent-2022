@@ -1,7 +1,6 @@
 package ch.aamiguet.advent2022
 
 import scala.io.Source
-import java.awt.image.TileObserver
 
 final case class Day22(
     filename: String
