@@ -6,6 +6,6 @@ final class Day18Test extends TestSuite:
   test("day 18") {
     expect(
       d.solvePart1 === 64,
-      //d.solvePart2 === 1514285714288L
+      d.solvePart2 === 58
     )
   }
