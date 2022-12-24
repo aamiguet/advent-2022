@@ -1,7 +1,6 @@
 package ch.aamiguet.advent2022
 
 import scala.io.Source
-import java.beans.Expression
 
 final case class Day21(
     filename: String
