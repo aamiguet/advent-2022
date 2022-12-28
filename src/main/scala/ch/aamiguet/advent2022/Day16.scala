@@ -14,8 +14,14 @@ case class Day16(
       tunnels: Map[Id, Int],
     )
 
-  case class State(
+  case class Worker(
+      name: Id,
       pos: Id,
+      timeToNext: Int,
+  )
+
+  case class State(
+      workers: List[Worker],
       pressureReleased: Int,
       remainingTime: Int,
       toVisit: Set[Id],
@@ -75,29 +81,50 @@ case class Day16(
   lazy val strippedGraph =
     graph.filter((id, valve) => id == "AA" || valve.flowRate > 0)
   lazy val relevantIds = strippedGraph.keys.toSet - "AA"
-  lazy val initialState = State("AA", 0, 30, relevantIds)
 
-  def allStates(states: List[State], acc: List[State]): List[State] =
+  @scala.annotation.tailrec
+  private def goodStates(states: List[State], acc: List[State]): List[State] =
+  // this is a bit of a hack, but it works
+  // we are only looking at the best 20000 states at each step
+  // it seems to be enough to find the solution, but of course
+  // I guess there's a better way to do it
     val nextStates =
-      for {
+      (for {
         state <- states
-        valve <- List(strippedGraph(state.pos))
+        worker <- List(state.workers.head)
+        valve <- List(strippedGraph(worker.pos))
         tunnel <- valve.tunnels
         if state.toVisit.contains(tunnel._1) && tunnel._2 < state.remainingTime
       } yield
-        val newRemainingTime = state.remainingTime - (tunnel._2 + 1)
+        val newTimeToNext = tunnel._2 + 1
+        val newWorkers = (worker.copy(pos = tunnel._1, timeToNext = newTimeToNext) :: state.workers.tail).sortBy(_.timeToNext)
+        val newRemainingTime = state.remainingTime - newWorkers.head.timeToNext
         State(
-          tunnel._1,
-          state.pressureReleased + strippedGraph(tunnel._1).flowRate * newRemainingTime,
+          newWorkers.map(w => w.copy(timeToNext = w.timeToNext - newWorkers.head.timeToNext)),
+          state.pressureReleased + strippedGraph(tunnel._1).flowRate * (state.remainingTime - newTimeToNext),
           newRemainingTime,
           state.toVisit - tunnel._1,
         )
+      ).sortBy(_.pressureReleased).reverse.take(20000)
     if nextStates.isEmpty then acc
-    else allStates(nextStates, acc ++ nextStates)
+    else goodStates(nextStates, acc ++ nextStates)
 
   def solvePart1: Int =
-    val init = List(initialState)
-    val finalStates = allStates(init, init)
+    val workers =
+      List(
+        Worker("Me", "AA", 0),
+      )
+    val init = List(State(workers, 0, 30, relevantIds))
+    val finalStates = goodStates(init, init)
     finalStates.map(_.pressureReleased).max
 
-  def solvePart2: Int = ???
+  def solvePart2: Int =
+    val workers =
+      List(
+        Worker("Me", "AA", 0),
+        Worker("Elephant", "AA", 0),
+      )
+    val init = List(State(workers, 0, 26, relevantIds))
+    val finalStates = goodStates(init, init)
+    finalStates.map(_.pressureReleased).max
+
