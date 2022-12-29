@@ -8,7 +8,7 @@ final case class Day17(
 
   case class Position(
       x: Int,
-      y: Int,
+      y: Long,
     )
 
   trait Rock:
@@ -89,45 +89,53 @@ final case class Day17(
   def jet(n: Int): Char =
     jetPattern(n)
 
-  def towerHeight(tower: Map[Position, Char]): Int =
+  def towerHeight(tower: Map[Position, Char]): Long =
     tower.keys.map(_.y).max
 
   def reduceAcc(acc: Map[Position, Char]): Map[Position, Char] =
     val h = towerHeight(acc)
     acc.filter(_._1.y >= h - 40)
 
-  def tower(rock: Rock, jetIndex: Int, acc: Map[Position, Char], n: Int): Map[Position, Char] =
+  def tower(rock: Rock, jetIndex: Int, acc: Map[Position, Char], n: Long): Map[Position, Char] =
     if n == 0 then acc
     else
-      if jetIndex == 2 then
-        println(s"n = $n with $rock")
       var pos = Position(2, towerHeight(acc) + 4)
       var j = jetIndex
       var isStuck = false
       while !isStuck do
+        if j == 0 then
+          println(s"n = $n with $rock at $pos")
         val ajPos = rock.afterJetPos(pos, jet(j), acc)
         val agPos = rock.afterGravityPos(ajPos, acc)
         isStuck = ajPos == agPos
         pos = agPos
         j = (j + 1) % jetPatternSize
+      if n == 999999998262L then
+        tower(rock.next, j, reduceAcc(acc ++ rock.currentPos(pos)), 999999998262L % 1730 - 1)
+      else
       tower(rock.next, j, reduceAcc(acc ++ rock.currentPos(pos)), n - 1)
 
   def printTower(tower: Map[Position, Char]): Unit =
     val height = towerHeight(tower)
     val width = tower.keys.map(_.x).max
-    for y <- (0 to height).reverse do
+    for y <- (0L to height).reverse do
       for x <- 0 to width do
         print(tower.getOrElse(Position(x, y), '.'))
       println()
 
-  def tower(n: Int): Map[Position, Char] =
+  def tower(n: Long): Map[Position, Char] =
     val t = (0 to 6).map (i => Position(i, 0) -> '_').toMap
     tower(HorizontalLine, 0, t, n)
 
-  def solvePart1: Int =
+  def solvePart1: Long =
     val finalTower = tower(2022)
     towerHeight(finalTower)
 
   def solvePart2: Long =
-    ???
+    val finalTower = tower(1000000000000L)
+    // for my input, I observe that there is a repeating pattern every 1730 iterations
+    // this pattern has a height of 2644
+    // so we can skip a bunch of iterations
+    // the better solution would be to automate the detection of the pattern ;-)
+    towerHeight(finalTower) + (999999998262L/1730L) * 2644L
 
