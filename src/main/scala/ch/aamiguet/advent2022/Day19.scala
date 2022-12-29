@@ -35,17 +35,12 @@ final case class Day19(
     val ds = scala.collection.mutable.ListBuffer.empty[Decision]
     if state.ore >= blueprint.geodeRobot._1 && state.obsidian >= blueprint.geodeRobot._2 then
       ds += BuildGeodeRobot
-    if state.ore >= blueprint.obsidianRobot._1 && state.clay >= blueprint.obsidianRobot._2 then
-      ds += BuildObsidianRobot
-    if state.ore >= blueprint.clayRobot then ds += BuildClayRobot
-    if state.ore >= blueprint.oreRobot then ds += BuildOreRobot
-    //if state.ore >= blueprint.geodeRobot._1 && state.obsidian >= blueprint.geodeRobot._2 then
-    //  ds += BuildGeodeRobot
-    //else if state.ore >= blueprint.obsidianRobot._1 && state.clay >= blueprint.obsidianRobot._2 then
-    //  ds += BuildObsidianRobot
-    //else if state.ore >= blueprint.clayRobot then ds += BuildClayRobot
-    //else if state.ore >= blueprint.oreRobot then ds += BuildOreRobot
-    ds += DoNothing
+    else
+      if state.ore >= blueprint.obsidianRobot._1 && state.clay >= blueprint.obsidianRobot._2 then
+        ds += BuildObsidianRobot
+      if state.ore >= blueprint.clayRobot then ds += BuildClayRobot
+      if state.ore >= blueprint.oreRobot then ds += BuildOreRobot
+      ds += DoNothing
     ds.toList.take(2)
 
   def nextState(
@@ -114,3 +109,8 @@ final case class Day19(
     blueprints.map(
       blueprint => blueprint.id * maxGeode(finalStates(List(State()), blueprint, 24))
     ).sum
+
+  def solvePart2: Int =
+    blueprints.take(3).map(
+      blueprint => maxGeode(finalStates(List(State()), blueprint, 32))
+    ).product

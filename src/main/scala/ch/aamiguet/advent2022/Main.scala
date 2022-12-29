@@ -7,6 +7,6 @@ package advent2022
   val d = Day19("input/day19.txt")
 
   println(d.solvePart1)
-  //println(d.solvePart2)
+  println(d.solvePart2)
 
   println("─" * 100)
