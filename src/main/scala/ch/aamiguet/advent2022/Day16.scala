@@ -1,7 +1,6 @@
 package ch.aamiguet.advent2022
 
 import scala.io.Source
-import cats.syntax.validated
 
 case class Day16(
     filename: String
