@@ -18,9 +18,8 @@ final case class Day17(
     def isLegal(position: Position, tower: Map[Position, Char]): Boolean =
       val c = currentPos(position)
       val keys = c.keys
-      keys.forall {
+      keys.forall:
         p => p.x >= 0 && p.x < 7 && !tower.isDefinedAt(p)
-      }
 
     def afterJetPos(position: Position, jet: Char, tower: Map[Position, Char]): Position =
       val newPos = jet match

@@ -53,7 +53,7 @@ final case class Day22(
     val g = lines
       .takeWhile(_.nonEmpty)
       .zipWithIndex
-      .flatMap {
+      .flatMap:
         case (line, y) =>
           val arr = line.toCharArray
           (0 until width).map { x =>
@@ -63,7 +63,6 @@ final case class Day22(
               case _ => Tile.Void
             Position(x, y) -> tile
           }
-      }
       .toMap
     (g, lines.last)
   lazy val maxX = grid.keys.map(_.x).max

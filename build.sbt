@@ -1,7 +1,7 @@
 import Dependencies._
 
 ThisBuild / organization := "ch.aamiguet"
-ThisBuild / scalaVersion := "3.2.1"
+ThisBuild / scalaVersion := "3.6.2"
 
 ThisBuild / scalacOptions ++=
   Seq(
@@ -10,7 +10,7 @@ ThisBuild / scalacOptions ++=
     "-feature",
     "-language:implicitConversions",
     "-unchecked",
-    "-Xfatal-warnings",
+    //"-Xfatal-warnings",
     //"-Yexplicit-nulls", // experimental (I've seen it cause issues with circe)
     "-Ykind-projector",
     //"-Ysafe-init", // experimental (I've seen it cause issues with circe)

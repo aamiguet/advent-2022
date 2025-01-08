@@ -24,11 +24,10 @@ final case class Day15(
     (sensor, beacon)
 
   lazy val lines = Source.fromFile(filename).getLines().filter(_.nonEmpty).toList
-  lazy val (sensors, beacons) = lines.foldLeft((List.empty[Sensor], Set.empty[Beacon])) {
+  lazy val (sensors, beacons) = lines.foldLeft((List.empty[Sensor], Set.empty[Beacon])):
     (acc, line) =>
       val (sensor, beacon) = parseLine(line)
       (sensor :: acc._1, acc._2 + beacon)
-  }
 
   def coveredPositions(row: Int): Int =
     val relevantSensors = sensors.filter(s => Math.abs(row - s.y) <= s.distance)

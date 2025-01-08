@@ -72,11 +72,10 @@ case class Day16(
       allTunnels(newAcc, currentTime + 1, toVisit.filterNot(nextTunnels.keySet.contains))
 
   lazy val graph =
-    valves.map {
+    valves.map:
       case (id, valve) =>
         val tunnels = allTunnels(Map(id -> 0), 0, valvesId - id)
         id -> valve.copy(tunnels = tunnels)
-    }
   lazy val strippedGraph =
     graph.filter((id, valve) => id == "AA" || valve.flowRate > 0)
   lazy val relevantIds = strippedGraph.keys.toSet - "AA"

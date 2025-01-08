@@ -14,21 +14,19 @@ final case class Day25(
     def toLong: Long =
       places
         .zipWithIndex
-        .map {
+        .map:
           case (place, index) =>
             place * powersOf5(index)
-        }
         .sum
 
     override def toString: String =
       places
-        .map {
+        .map:
           case 2L => "2"
           case 1L => "1"
           case 0L => "0"
           case -1L => "-"
           case -2L => "="
-        }
         .mkString("")
         .reverse
         .dropWhile(_ == '0')

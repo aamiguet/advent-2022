@@ -11,9 +11,8 @@ final class Day10Test extends TestSuite:
        |######......######......######......####
        |#######.......#######.......#######.....""".stripMargin.split("\n").toList
 
-  test("day 10") {
+  test("day 10"):
     expect(
       d.solvePart1 === 13140,
       d.screen === screen,
     )
-  }
